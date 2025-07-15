@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_security
+    username: spring
+    password: security
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.FilterChainProxy: DEBUG
+
+jwt:
+  secret: secretsecretsecretsecretsecretsecretsecretsecretsecret
+  expiration: 3600000 # 1?? (???)
