@@ -1,12 +1,20 @@
 package com.example.securityflow.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class RegisterResponse {
-    private Long id;
-    private String username;
-    private String role;
+    private final Long id;
+    private final String username;
+    private final String role;
+
+    public static RegisterResponse of(Long id, String username, String role) {
+        return RegisterResponse.builder()
+                               .id(id)
+                               .username(username)
+                               .role(role)
+                               .build();
+    }
 }

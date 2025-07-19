@@ -19,22 +19,15 @@ public class UserController {
 
     private final UserService userService;
 
-    // 회원가입
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
-        RegisterResponse response = userService.registerUser(
-                request.getUsername(),
-                request.getPassword(),
-                request.getRole() == null ? "ROLE_USER" : request.getRole()
-        );
-
+        RegisterResponse response = userService.registerUser(request);
         return ResponseEntity.ok(response);
     }
-
-    // 로그인
+    
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
-        String token = userService.loginUser(request);
-        return ResponseEntity.ok(new JwtResponse(token));
+        JwtResponse response = userService.loginUser(request);
+        return ResponseEntity.ok(response);
     }
 }

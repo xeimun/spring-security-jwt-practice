@@ -1,10 +1,16 @@
 package com.example.securityflow.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class JwtResponse {
-    private String token;
+    private final String token;
+
+    public static JwtResponse of(String token) {
+        return JwtResponse.builder()
+                          .token(token)
+                          .build();
+    }
 }

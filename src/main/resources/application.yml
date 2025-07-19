@@ -6,7 +6,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -19,4 +19,4 @@ logging:
 
 jwt:
   secret: secretsecretsecretsecretsecretsecretsecretsecretsecret
-  expiration: 3600000 # 1?? (???)
+  expiration: 3600000

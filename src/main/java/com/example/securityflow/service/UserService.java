@@ -1,10 +1,11 @@
 package com.example.securityflow.service;
 
 import com.example.securityflow.domain.User;
+import com.example.securityflow.dto.JwtResponse;
 import com.example.securityflow.dto.LoginRequest;
+import com.example.securityflow.dto.RegisterRequest;
 import com.example.securityflow.dto.RegisterResponse;
 import com.example.securityflow.repository.UserRepository;
-import com.example.securityflow.security.CustomUserDetails;
 import com.example.securityflow.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,26 +25,21 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 회원가입
-    public RegisterResponse registerUser(String username, String password, String role) {
-        User saved = userRepository.save(
-                new User(null, username, passwordEncoder.encode(password), role)
+    public RegisterResponse registerUser(RegisterRequest request) {
+        User newUser = new User(null,
+                request.getUsername(),
+                passwordEncoder.encode(request.getPassword()),
+                request.getRole() == null ? "ROLE_USER" : request.getRole()
         );
-
-        return new RegisterResponse(
-                saved.getId(),
-                saved.getUsername(),
-                saved.getRole()
-        );
+        User saved = userRepository.save(newUser);
+        return RegisterResponse.of(saved.getId(), saved.getUsername(), saved.getRole());
     }
 
-    // 로그인
-    public String loginUser(LoginRequest request) {
+    public JwtResponse loginUser(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        return jwtTokenProvider.generateToken(authentication);
+        String token = jwtTokenProvider.generateToken(authentication);
+        return JwtResponse.of(token);
     }
 }
